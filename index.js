@@ -1,10 +1,10 @@
-const Transport = require('winston-transport');
-const Signale = require('signale').Signale;
+const Transport = require("winston-transport");
+const Signale = require("signale").Signale;
 
 const signale = new Signale({
   types: {
-    verbose: typeFactory('☰', 'green', 'verbose'),
-    silly: typeFactory('☐', 'cyan', 'silly'),
+    verbose: typeFactory("☰", "green", "verbose"),
+    silly: typeFactory("☐", "cyan", "silly"),
   },
 });
 
@@ -23,10 +23,12 @@ function SignaleTransport(opts) {
 
 SignaleTransport.prototype = Object.create(Transport.prototype);
 
-SignaleTransport.prototype.log = function (info, callback) {
-  signale[info.level](info.message);
+SignaleTransport.prototype.constructor = SignaleTransport;
+
+SignaleTransport.prototype.log = function(info, callback) {
+  signale[info.level](info);
   setImmediate(() => {
-    this.emit('logged', info);
+    this.emit("logged", info);
   });
 
   callback();
